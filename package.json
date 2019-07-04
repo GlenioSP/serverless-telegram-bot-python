@@ -1,0 +1,15 @@
+{
+  "name": "serverless-telegram-bot-python",
+  "description": "",
+  "version": "0.1.0",
+  "author": "gleniosp",
+  "dependencies": {},
+  "devDependencies": {
+    "serverless": "^1.45.1",
+    "serverless-dependson-plugin": "^1.1.2",
+    "serverless-iam-roles-per-function": "^2.0.1",
+    "serverless-plugin-split-stacks": "^1.7.6",
+    "serverless-pseudo-parameters": "^2.4.0",
+    "serverless-python-requirements": "^4.3.0"
+  }
+}

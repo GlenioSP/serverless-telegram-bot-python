@@ -1,0 +1,52 @@
+service: ${self:custom.service_name}
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-2
+  stage: dev
+  versionFunctions: false
+  environment:
+    TELEGRAM_TOKEN: ${file(./.env.yml):TELEGRAM_TOKEN, ''}
+
+package:
+  individually: true
+
+functions:
+  webhook:
+    handler: webhook.handler
+    module: src
+    memorySize: 512
+    timeout: 30
+    iamRoleStatementsName: ${self:custom.service_name}-lambda-webhook
+    iamRoleStatements:
+    events:
+      - http:
+          path: /
+          method: post
+  set-webhook:
+    handler: webhook.set_webhook
+    module: src
+    iamRoleStatementsName: ${self:custom.service_name}-lambda-set-webhook
+    iamRoleStatements:
+    events:
+      - http:
+          path: /set_webhook
+          method: post
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-plugin-split-stacks
+  - serverless-pseudo-parameters
+  - serverless-python-requirements
+  - serverless-dependson-plugin
+
+custom:
+  service_name: telegram-bot-python
+  pythonRequirements:
+    dockerizePip: non-linux
+  dependsOn:
+    enabled: false
+
+resources:
+  Description: Serverless Telegram bot with Python
